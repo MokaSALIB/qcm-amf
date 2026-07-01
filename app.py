@@ -1116,4 +1116,4 @@ if st.session_state.qcm_df is not None and st.session_state.submitted:
         st.info("Le corrigé est masqué pour simuler l’examen.")
 
 else:
-    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")              
+    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")
