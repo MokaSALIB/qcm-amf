@@ -21,20 +21,122 @@ st.set_page_config(
 # =========================
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.stApp {
+    background: linear-gradient(180deg, #f6f7fb 0%, #eef0f9 100%);
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: #ffffff;
+    border-right: 1px solid #ececf5;
+}
+section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
+    color: #1f2130;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #16182b;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+/* Titles */
 .main-title {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 800;
     margin-bottom: 0.2rem;
+    background: linear-gradient(90deg, #4F46E5, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
 }
 .sub-title {
-    color: #666;
-    margin-bottom: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 1.6rem;
+    font-size: 1.02rem;
 }
+
+/* Buttons */
+.stButton>button {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #1f2937;
+    font-weight: 600;
+    padding: 0.55rem 1.1rem;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+.stButton>button:hover {
+    border-color: #6366F1;
+    color: #4F46E5;
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.18);
+    transform: translateY(-1px);
+}
+.stButton>button:active {
+    transform: translateY(0);
+}
+
+/* Metrics */
+div[data-testid="stMetric"] {
+    background: #ffffff;
+    border: 1px solid #eef0f6;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+}
+div[data-testid="stMetricValue"] {
+    color: #16182b;
+    font-weight: 800;
+}
+div[data-testid="stMetricLabel"] {
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* Progress bar */
+.stProgress > div > div > div > div {
+    background-image: linear-gradient(90deg, #6366F1, #8B5CF6);
+    border-radius: 8px;
+}
+
+/* Answer options */
+div[role="radiogroup"] label {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    transition: all 0.15s ease;
+}
+div[role="radiogroup"] label:hover {
+    border-color: #6366F1;
+    background: #eef2ff;
+}
+
+/* Expanders */
+details {
+    border-radius: 14px !important;
+    border: 1px solid #eef0f6 !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
+}
+
+/* Cards */
 .question-box {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid #e6e6e6;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid #eef0f6;
+    box-shadow: 0 4px 14px rgba(16, 24, 40, 0.06);
     margin-bottom: 18px;
 }
 .correct {
@@ -46,44 +148,48 @@ st.markdown("""
     font-weight: 700;
 }
 .info-box {
-    background-color: #eef6ff;
-    padding: 12px;
-    border-radius: 10px;
-    border-left: 5px solid #3b82f6;
-    margin-bottom: 12px;
+    background: #eef2ff;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border-left: 5px solid #6366F1;
+    margin-bottom: 14px;
+    color: #312e81;
 }
 .success-box {
-    background-color: #ecfdf5;
-    padding: 14px;
-    border-radius: 12px;
+    background: #ecfdf5;
+    padding: 16px;
+    border-radius: 14px;
     border-left: 5px solid #10b981;
     margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
 }
 .danger-box {
-    background-color: #fef2f2;
-    padding: 14px;
-    border-radius: 12px;
+    background: #fef2f2;
+    padding: 16px;
+    border-radius: 14px;
     border-left: 5px solid #ef4444;
     margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
 }
 .exam-box {
-    background-color: #fff7ed;
-    padding: 14px;
-    border-radius: 12px;
+    background: #fff7ed;
+    padding: 16px;
+    border-radius: 14px;
     border-left: 5px solid #f97316;
     margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
 }
 .review-box {
-    background-color: #fffbea;
-    padding: 10px;
-    border-radius: 10px;
+    background: #fffbea;
+    padding: 12px 14px;
+    border-radius: 12px;
     border-left: 5px solid #eab308;
     margin-bottom: 12px;
 }
 .nav-box {
-    background-color: #f9fafb;
-    padding: 12px;
-    border-radius: 10px;
+    background: #f9fafb;
+    padding: 14px 16px;
+    border-radius: 12px;
     border: 1px solid #e5e7eb;
     margin-bottom: 12px;
 }
@@ -1054,66 +1160,4 @@ if st.session_state.qcm_df is not None and st.session_state.submitted:
                     Total : {results['score_total']}/{len(qcm_df)}
                 </div>
                 """,
-                unsafe_allow_html=True
-            )
-        else:
-            st.markdown(
-                f"""
-                <div class="danger-box">
-                    <b>NON ADMIS ❌</b><br>
-                    Partie A : {results['score_a']}/{results['total_a']} (minimum {EXAM_A_PASS})<br>
-                    Partie C : {results['score_c']}/{results['total_c']} (minimum {EXAM_C_PASS})<br>
-                    Total : {results['score_total']}/{len(qcm_df)}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-    else:
-        st.metric("Pourcentage", f"{results['percentage']}%")
-
-    if st.session_state.last_mode == "Mode examen AMF" and not st.session_state.show_correction:
-        if st.button("👁️ Afficher le corrigé", use_container_width=True):
-            st.session_state.show_correction = True
-            st.rerun()
-
-    if st.session_state.show_correction:
-        st.markdown("---")
-        st.subheader("📖 Corrigé détaillé")
-
-        for i, row in qcm_df.iterrows():
-            user_choice = user_answers.get(i)
-            correct_choice = row["Reponse"]
-            correct_text = get_correct_answer_text(row)
-
-            st.markdown('<div class="question-box">', unsafe_allow_html=True)
-            st.markdown(f"**Question {i+1}**")
-            st.write(f"**Catégorie : {row['Question_Categorie']}**")
-            st.write(row["question contenant le numéro unique"])
-
-            if user_choice == correct_choice:
-                st.markdown(
-                    f"<div class='correct'>✅ Ta réponse : {user_choice} — Bonne réponse</div>",
-                    unsafe_allow_html=True
-                )
-            else:
-                st.markdown(
-                    f"<div class='wrong'>❌ Ta réponse : {user_choice}</div>",
-                    unsafe_allow_html=True
-                )
-                st.markdown(
-                    f"<div class='correct'>✅ Bonne réponse : {correct_choice}</div>",
-                    unsafe_allow_html=True
-                )
-
-            if i in st.session_state.marked_for_review:
-                st.write("**Marquée à revoir :** Oui")
-
-            st.write(f"**Réponse correcte :** {correct_text}")
-            st.write(f"**ID question :** {row['n°identifiant']}")
-            st.write(f"**Thème :** {row['Theme']} | **Sous-thème :** {row['Sous_theme']}")
-            st.markdown("</div>", unsafe_allow_html=True)
-    else:
-        st.info("Le corrigé est masqué pour simuler l’examen.")
-
-else:
-    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")
+                unsafe_a
