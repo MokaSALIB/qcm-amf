@@ -1160,4 +1160,66 @@ if st.session_state.qcm_df is not None and st.session_state.submitted:
                     Total : {results['score_total']}/{len(qcm_df)}
                 </div>
                 """,
-                unsafe_a
+                unsafe_allow_html=True
+            )
+        else:
+            st.markdown(
+                f"""
+                <div class="danger-box">
+                    <b>NON ADMIS ❌</b><br>
+                    Partie A : {results['score_a']}/{results['total_a']} (minimum {EXAM_A_PASS})<br>
+                    Partie C : {results['score_c']}/{results['total_c']} (minimum {EXAM_C_PASS})<br>
+                    Total : {results['score_total']}/{len(qcm_df)}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    else:
+        st.metric("Pourcentage", f"{results['percentage']}%")
+
+    if st.session_state.last_mode == "Mode examen AMF" and not st.session_state.show_correction:
+        if st.button("👁️ Afficher le corrigé", use_container_width=True):
+            st.session_state.show_correction = True
+            st.rerun()
+
+    if st.session_state.show_correction:
+        st.markdown("---")
+        st.subheader("📖 Corrigé détaillé")
+
+        for i, row in qcm_df.iterrows():
+            user_choice = user_answers.get(i)
+            correct_choice = row["Reponse"]
+            correct_text = get_correct_answer_text(row)
+
+            st.markdown('<div class="question-box">', unsafe_allow_html=True)
+            st.markdown(f"**Question {i+1}**")
+            st.write(f"**Catégorie : {row['Question_Categorie']}**")
+            st.write(row["question contenant le numéro unique"])
+
+            if user_choice == correct_choice:
+                st.markdown(
+                    f"<div class='correct'>✅ Ta réponse : {user_choice} — Bonne réponse</div>",
+                    unsafe_allow_html=True
+                )
+            else:
+                st.markdown(
+                    f"<div class='wrong'>❌ Ta réponse : {user_choice}</div>",
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f"<div class='correct'>✅ Bonne réponse : {correct_choice}</div>",
+                    unsafe_allow_html=True
+                )
+
+            if i in st.session_state.marked_for_review:
+                st.write("**Marquée à revoir :** Oui")
+
+            st.write(f"**Réponse correcte :** {correct_text}")
+            st.write(f"**ID question :** {row['n°identifiant']}")
+            st.write(f"**Thème :** {row['Theme']} | **Sous-thème :** {row['Sous_theme']}")
+            st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.info("Le corrigé est masqué pour simuler l’examen.")
+
+else:
+    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")
