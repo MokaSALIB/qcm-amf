@@ -100,12 +100,12 @@ st.markdown("""
 EXCEL_FILE = "database_amf.xlsx"
 
 PROFILES = {
-    "Mickael": {
+    "Profil 1": {
         "wrong_questions": "wrong_questions.json",
         "seen_questions": "seen_questions.json",
         "saved_sessions": "saved_sessions.json",
     },
-    "Andrew": {
+    "Profil 2": {
         "wrong_questions": "wrong_questions_andrew.json",
         "seen_questions": "seen_questions_andrew.json",
         "saved_sessions": "saved_sessions_andrew.json",
@@ -1116,4 +1116,4 @@ if st.session_state.qcm_df is not None and st.session_state.submitted:
         st.info("Le corrigé est masqué pour simuler l’examen.")
 
 else:
-    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")                 
+    st.info("Choisis un mode puis clique sur **Lancer le QCM**.")              
