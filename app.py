@@ -936,6 +936,62 @@ with st.expander("Voir mes stats par catégorie"):
     c4.metric("Erreurs C", wrong_c)
 
 # =========================
+# PROGRESSION PAR THÈME
+# =========================
+st.subheader("📈 Progression par thème")
+st.markdown(
+    '<div class="small-muted">Trié par priorité : les thèmes les plus fragiles apparaissent en premier.</div>',
+    unsafe_allow_html=True
+)
+
+seen_ids_all = set(load_json_list(SEEN_QUESTIONS_FILE))
+wrong_ids_all = set(load_json_list(WRONG_QUESTIONS_FILE))
+
+theme_stats = []
+for theme_name in sorted(df["Theme"].dropna().unique().tolist()):
+    theme_df = df[df["Theme"] == theme_name]
+    theme_ids = set(theme_df["n°identifiant"].astype(str).tolist())
+    total = len(theme_ids)
+    seen_n = len(theme_ids & seen_ids_all)
+    wrong_n = len(theme_ids & wrong_ids_all)
+    seen_pct = (seen_n / total) if total > 0 else 0
+    error_rate = (wrong_n / seen_n) if seen_n > 0 else 0
+
+    theme_stats.append({
+        "theme": theme_name,
+        "total": total,
+        "seen": seen_n,
+        "wrong": wrong_n,
+        "seen_pct": seen_pct,
+        "error_rate": error_rate,
+    })
+
+# Priorité : plus le taux d'erreur est élevé (et moins c'est vu), plus c'est en haut
+theme_stats.sort(key=lambda t: (-t["error_rate"] if t["seen"] > 0 else -1, t["seen_pct"]))
+
+with st.expander("Voir la progression détaillée par thème", expanded=True):
+    for t in theme_stats:
+        if t["seen"] == 0:
+            badge_html = '<span class="small-muted">⚪ Jamais travaillé</span>'
+        elif t["error_rate"] >= 0.4:
+            badge_html = "<span style='color:#b91c1c; font-weight:700;'>🔴 À travailler en priorité</span>"
+        elif t["error_rate"] >= 0.2:
+            badge_html = "<span style='color:#c2410c; font-weight:700;'>🟠 À revoir</span>"
+        else:
+            badge_html = "<span style='color:#15803d; font-weight:700;'>🟢 Bien maîtrisé</span>"
+
+        st.markdown(
+            f"**{t['theme']}** &nbsp;·&nbsp; {badge_html}",
+            unsafe_allow_html=True
+        )
+        st.progress(t["seen_pct"])
+
+        caption = f"{t['seen']}/{t['total']} questions vues ({round(t['seen_pct'] * 100)}%)"
+        if t["seen"] > 0:
+            caption += f" · {t['wrong']} erreur(s) parmi les vues ({round(t['error_rate'] * 100)}%)"
+        st.caption(caption)
+
+# =========================
 # GESTION LISTE ERREURS
 # =========================
 with st.expander("Gérer la liste des questions ratées"):
